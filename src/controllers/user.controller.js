@@ -45,9 +45,10 @@ const verify = asynchandler(async (req, res) => {
   }
 
   console.log("Looking for address:", result.data.address);
-  
+
+  const adminAddress =result.data.address.toLowerCase() ;
   const authorizedUser = await Organisation.findOne({ 
-    adminAddress: result.data.address.toLowerCase() // Convert to lowercase
+    adminAddress: adminAddress
   });
 
   console.log("Found authorized user:", authorizedUser);
@@ -60,7 +61,7 @@ const verify = asynchandler(async (req, res) => {
   }
 
   const token = generateToken({
-    address: authorizedUser.walletAddress,
+    address: adminAddress,
     contractAddress: authorizedUser.contractAddress,
   });
 
