@@ -44,7 +44,13 @@ const verify = asynchandler(async (req, res) => {
     throw new ApiError(400, "Invalid nonce");
   }
 
-  const authorizedUser = await Organisation.findOne({ adminAddress: result.data.address });
+  console.log("Looking for address:", result.data.address);
+  
+  const authorizedUser = await Organisation.findOne({ 
+    adminAddress: result.data.address.toLowerCase() // Convert to lowercase
+  });
+
+  console.log("Found authorized user:", authorizedUser);
 
   if (!authorizedUser) {
     throw new ApiError(

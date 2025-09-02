@@ -24,9 +24,9 @@ const createNotice = asynchandler(async (req, res) => {
     throw new ApiError("User not authenticated", 401);
   }
 
-  const { noticeId, ipfsAddress } = req.body;
+  const { noticeId, ipfsAddress ,noticeTitle} = req.body;
 
-  if (!noticeId || !ipfsAddress) {
+  if (!noticeId || !ipfsAddress || !noticeTitle) {
     throw new ApiError("All fields are required", 400);
   }
 
@@ -38,6 +38,7 @@ const createNotice = asynchandler(async (req, res) => {
     organisation: organisation._id,
     noticeId,
     ipfsAddress,
+    title:noticeTitle
   });
 
   res

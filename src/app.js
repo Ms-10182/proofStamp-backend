@@ -15,7 +15,6 @@ app.use(cors({
 app.use(cookieParser());
 
 
-
 import healthRouter from "./routes/health.route.js";
 import userRouter from "./routes/user.route.js";
 import organisationRouter from "./routes/organisation.route.js";

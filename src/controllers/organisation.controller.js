@@ -14,7 +14,7 @@ const getOrgList = asynchandler(async (req, res) => {
   res
     .status(200)
     .json(
-      new ApiResponse("Organisations retrieved successfully", 200, results)
+      new ApiResponse(200,"Organisations retrieved successfully", results)
     );
 });
 
@@ -24,13 +24,13 @@ const getOrgByRegNo = asynchandler(async (req, res) => {
   const organisation = await Organisation.findOne({ orgRegId: regNo });
 
   if (!organisation) {
-    throw new ApiError("Organisation not found", 404);
+    throw new ApiError(404,"Organisation not found");
   }
 
   res.status(200).json(
     new ApiResponse(
-      "Organisation retrieved successfully",
       200,
+      "Organisation retrieved successfully",
       organisation
     )
   );
@@ -38,8 +38,12 @@ const getOrgByRegNo = asynchandler(async (req, res) => {
 
 
 const getMyOrganisation = asynchandler(async (req, res) => {
-  const adminAddress = req.user.address;
+  const adminAddress = req.user.address.toLowerCase(); // Convert to lowercase
+  console.log("Looking for adminAddress:", adminAddress);
+  
   const organisation = await Organisation.findOne({ adminAddress });
+
+  console.log("Found organisation:", organisation);
 
   if (!organisation) {
     throw new ApiError(404, "Organisation not found for this admin.");
@@ -64,7 +68,7 @@ const createOrg = asynchandler(async (req, res) => {
   const { adminAddress, organisationName, orgRegId, contractAddress } = req.body;
 
   if (!adminAddress || !organisationName || !orgRegId || !contractAddress) {
-    throw new ApiError("All fields are required", 400);
+    throw new ApiError(400,"All fields are required");
   }
 
   const organisation = await Organisation.create({
@@ -75,8 +79,8 @@ const createOrg = asynchandler(async (req, res) => {
   });
 
   res.status(200).json(new ApiResponse(
-    "Organisation created successfully",
     201,
+    "Organisation created successfully",
     organisation
   ));
 });
